@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spam Detection</title>
+</head>
+<style>
+    *{
+        margin: 0px;
+        padding: 0px;
+    }
+    body{
+       display:flex;
+       flex-direction: row;
+       background-color: grey;
+       justify-content: space-between;
+    }
+    #chatspace{
+        width: 50vw;
+        display: flex;
+        flex-direction: column;
+        justify-items: space-between;
+        margin-left: 100px;
+    }
+    h1{
+        margin: 20px auto;
+        color: red;
+        font-size: 50px;
+        width: 100%;
+    }
+    input[type="text"]{
+        height: 300px;
+        font-size: 20px;
+        word-wrap: break-word;
+        width: 100%;
+    }
+    label{
+        color:white;
+        font-szie: 25px;
+    }
+    button{
+        padding:20px;
+        color: white;
+        background-color: Blue;
+        box-shadow: none;
+        font-size: 25px;
+        border-radius: 15px;
+        outline: none;
+        border: none;
+        width: 100%;
+    }
+    #result{
+        margin-top: 135px;
+        color: black;
+        font-size: 20px;
+        background-color: white;
+        width: 25vw;
+        margin-right: 100px;
+        text-align: center;
+        padding: 25px;
+    }
+</style>
+<body>
+    <div id="chatspace">
+        <h1>Check your SMS</h1>
+        <label for="smsInput">Enter SMS Message:</label><br>
+        <input type="text" id="smsInput"></input><br>
+        <button onclick="predict()">Submit</button>
+    </div>
+    <div id="result">
+
+    </div>
+
+    <script>
+        function predict() {
+            var inputData = {
+                smsInput: document.getElementById('smsInput').value
+            };
+
+            fetch('/predict', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(inputData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('result').innerText = data.result;
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+</body>
+</html>
